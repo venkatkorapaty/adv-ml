@@ -3,8 +3,6 @@ import os
 from sklearn.feature_extraction.text import CountVectorizer
 
 def main():
-    path = "./aclImdb/train/pos/"
-    reviews = os.listdir(path)
     stop_words = ["10", "a", "about", "above", "across", "after", "afterwards", "again", "against",
     "all", "almost", "alone", "along", "already", "also", "although", "always",
     "am", "among", "amongst", "amoungst", "amount", "an", "and", "another",
@@ -48,26 +46,41 @@ def main():
     "yourselves"]
     vectorizer = CountVectorizer(stop_words=stop_words)
 
-    all_reviews = []
+    train_reviews = []
+    cv_reviews = []
+
+    path = "./aclImdb/train/pos/"
+    reviews = os.listdir(path)
+    get_text(reviews[:10000], path, train_reviews)
+    get_text(reviews[10000:], path, cv_reviews)
+
+    path = "./aclImdb/train/neg/"
+    reviews = os.listdir(path)
+    get_text(reviews[:10000], path, train_reviews)
+    get_text(reviews[10000:], path, cv_reviews)
+
+    train_data = vectorizer.fit_transform(train_reviews)
+    train_names = vectorizer.get_feature_names()
+
+    print(train_data.shape)
+    np.save('./train.npy', train_data.toarray())
+    np.save('./train_words.npy', np.array(train_names))
+    train_data = None
+    train_names = None
+
+    vectorizer = CountVectorizer(stop_words=stop_words)
+    cv_data = vectorizer.fit_transform(cv_reviews)
+    cv_names = vectorizer.get_feature_names()
+
+    print(cv_data.shape)
+    np.save('./cv.npy', cv_data.toarray())
+    np.save('./cv_words.npy', np.array(cv_names))
+
+def get_text(reviews, path, all_reviews):
     for i in range(len(reviews)):
         print(i)
-        text = open(path + reviews[i]).readlines()[0]
-        # print(text)
+        text = open(path + reviews[i], encoding='utf-8').readlines()[0]
         all_reviews.append(text)
-
-        # need to add each text value into overall array
-        # print(x)
-        # gets the numpy array matrix
-        # x.toarray()
-
-    x = vectorizer.fit_transform(all_reviews)
-    # gets what word each feature in the matrix is
-    names = vectorizer.get_feature_names()
-    print(names)
-    print(x.shape)
-    np.save('./train_pos.npy', x.toarray()[:1000])
-    np.save('./train_pos_words.npy', np.array(names)[:100])
-
 
 if __name__ == '__main__':
     main()
