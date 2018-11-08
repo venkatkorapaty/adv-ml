@@ -3,9 +3,7 @@ import os
 from sklearn.feature_extraction.text import CountVectorizer
 
 def main():
-    stop_words = ["10", "a", "about", "above", "across", "after", "afterwards", "again", "against",
-    "all", "almost", "alone", "along", "already", "also", "although", "always",
-    "am", "among", "amongst", "amoungst", "amount", "an", "and", "another",
+    stop_words = ["a", "am", "among", "amongst", "amoungst", "amount", "an", "and", "another",
     "any", "anyhow", "anyone", "anything", "anyway", "anywhere", "are",
     "around", "as", "at", "back", "be", "became", "because", "become",
     "becomes", "becoming", "been", "before", "beforehand", "behind", "being",
@@ -75,6 +73,9 @@ def main():
     print(cv_data.shape)
     np.save('./cv.npy', cv_data.toarray())
     np.save('./cv_words.npy', np.array(cv_names))
+    
+    # CAN TOKENIZE NEW VALUES BY PASSING IN PARAMATER preprocessor=names
+    # INTO CONSTRUCTOR CountVectorizer(preprocessor=names)
 
 def get_text(reviews, path, all_reviews):
     for i in range(len(reviews)):
