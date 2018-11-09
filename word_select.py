@@ -14,12 +14,12 @@ def main():
     fifty_most_freq = words[np.argpartition(tot_word_freq, -50)[-50:]]
     print(fifty_most_freq)
 
-    one_occ = words[tot_word_freq == 1]
-    print(one_occ)
-    print(one_occ.shape)
+    five_occ = words[(tot_word_freq <= 5) == False]
+    print(five_occ)
 
     # gets matrix with words that occur 5 times or less in total, removed
-    # X[:, (tot_word_freq <= 5) == False]
+    np.save('./train_reduced.npy', X[:, (tot_word_freq <= 5) == False])
+    np.save('./train_words_reduced.npy', five_occ)
 
 if __name__ == '__main__':
     main()
