@@ -4,6 +4,8 @@ matplotlib.use('TkAgg')
 from scipy.sparse import coo_matrix
 import scipy.sparse as ss
 import matplotlib.pyplot as plt
+from sklearn import manifold
+from sklearn.decomposition import PCA
 import time
 
 def plot_coo_matrix(m):
