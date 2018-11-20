@@ -1,5 +1,6 @@
 import numpy as np
 import random
+from sklearn.model_selection import train_test_split
 
 def main():
     X = np.load('train_reduced2.npy')
@@ -39,5 +40,19 @@ def main():
     print("X: ", X.shape, " amount of data: ", amount_of_data)
     print("X_cv: ", X_cv.shape)
 
+def main2():
+    X = np.load('train_reduced2.npy')
+    ones = np.ones((12500, 1))
+    zeros = np.zeros((12500, 1))
+    y = np.atleast_2d(np.append(ones, zeros)).T
+    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2)
+    print(X_train.shape)
+    print(X_val.shape)
+    np.save('./lmrd_train.npy', X_train)
+    np.save('./lmrd_cv.npy', X_val)
+    np.save('./lmrd_train_y.npy', y_train)
+    np.save('./lmrd_cv_y.npy', y_val)
+
 if __name__ == '__main__':
-    main()
+    #main()
+    main2()

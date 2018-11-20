@@ -14,12 +14,12 @@ def main():
 
     print("Most frequent word: ", most_occ, " ", words[tot_word_freq == most_occ])
 
-    five_occ = words[tot_word_freq > 5]
-    print(five_occ)
+    fifteen_occ = words[tot_word_freq > 15]
+    print(fifteen_occ)
 
     # gets matrix with words that occur 5 times or less in total, removed
-    np.save('./train_reduced.npy', X[:, tot_word_freq > 5])
-    np.save('./train_words_reduced.npy', five_occ)
+    np.save('./train_reduced15.npy', X[:, tot_word_freq > 15])
+    np.save('./train_words_reduced15.npy', fifteen_occ)
 
 
 def main2():
@@ -27,8 +27,8 @@ def main2():
     Gets rid of 47 most occuring words in all of the
     articles, asides from good, not and was
     """
-    X = np.load('train_reduced.npy')
-    words = np.load('train_words_reduced.npy')
+    X = np.load('train_reduced15.npy')
+    words = np.load('train_words_reduced15.npy')
 
     tot_word_freq = np.sum(X, 0)
     most_occ = np.max(np.sum(X, 0))
@@ -51,5 +51,5 @@ def main2():
 
 
 if __name__ == '__main__':
-    # main()
+    main()
     main2()
