@@ -25,7 +25,7 @@ def main():
     #LogisReg(X_t, y_t, X_cv, y_cv, C=0.007)
 
 def LogisReg(X_t, y_t, X_cv, y_cv, C=1):
-    lr = LogisticRegression(C=C)
+    lr = LogisticRegression(C=0.75)
     lr.fit(X_t, y_t[:, 0])
     train_pred = lr.predict(X_t)
     cv_pred = lr.predict(X_cv)
@@ -38,11 +38,10 @@ def LogisReg(X_t, y_t, X_cv, y_cv, C=1):
 
 def recursive_feature_elimination(X_t, y_t, X_cv, y_cv):
     lr = LogisticRegression()
-    selector = RFE(lr, 10000, step=1).fit(X_t, y_t)
+    selector = RFE(lr, 10000, step=100).fit(X_t, y_t[:, 0])
 
     train_pred = selector.predict(X_t)
     cv_pred = selector.predict(X_cv)
-    print("C: ", C)
     correct_preds = np.array(train_pred) == y_t[:, 0]
     print("Train error: ", np.sum(correct_preds) / y_t[:, 0].shape[0])
     
