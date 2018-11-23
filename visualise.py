@@ -48,13 +48,15 @@ def main3():
     X_centred = X_t - X_t.mean(axis=0)
     U, s, V = np.linalg.svd(X_centred)
     print("Finished SVD Decomp..")
+    np.save('lmrd_eigens.npy', V)
+    print("Finished saving eigenvectors..")
     X_3d = X_centred.dot(V.T[:, :3])
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
     for i in range(X_3d.shape[0]):
-
+        print(i)
         if y_t[i] == 1:
             c = 'r'
             m = 'o'
@@ -66,6 +68,8 @@ def main3():
     ax.set_xlabel('1st Principle Component')
     ax.set_ylabel('2nd Principle Component')
     ax.set_zlabel('3rd Principle Component')
+
+    plt.savefig('DGFGFGF.png')
     plt.show()
 
 
