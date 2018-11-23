@@ -8,9 +8,9 @@ def main():
     X_cv = np.load('lmrd_cv.npy')
     y_cv = np.load('lmrd_cv_y.npy')
 
-    #LogisReg(X_t, y_t, X_cv, y_cv, p='l1', C=1)
-    #recursive_feature_elimination(X_t, y_t, X_cv, y_cv, p='l1', C=0.75)
-    #recursive_feature_elimination(X_t, y_t, X_cv, y_cv, p='l1', C=0.5)
+    LogisReg(X_t, y_t, X_cv, y_cv, p='l1', C=1)
+    recursive_feature_elimination(X_t, y_t, X_cv, y_cv, p='l1', C=0.75)
+    recursive_feature_elimination(X_t, y_t, X_cv, y_cv, p='l1', C=0.5)
     recursive_feature_elimination(X_t, y_t, X_cv, y_cv, p='l1', C=0.3)
     #LogisReg(X_t, y_t, X_cv, y_cv, p='l1', C=0.95)
     #LogisReg(X_t, y_t, X_cv, y_cv, p='l1', C=0.9)
