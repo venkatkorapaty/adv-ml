@@ -83,5 +83,25 @@ def get_text(reviews, path, all_reviews):
         text = open(path + reviews[i], encoding='utf-8').readlines()[0]
         all_reviews.append(text)
 
+def main2():
+    words = np.load('train_words_reduced2.npy')
+    vectorizer = CountVectorizer(vocabulary=list(words))
+
+    test_reviews = []
+
+    path = "./aclImdb/test/pos/"
+    reviews = os.listdir(path)
+    get_text(reviews, path, test_reviews)
+
+    path = "./aclImdb/test/neg/"
+    reviews = os.listdir(path)
+    get_text(reviews, path, test_reviews)
+    #print(np.array(test_reviews))
+    test_data = vectorizer.fit_transform(test_reviews)
+    np.save('./test_15236.npy', test_data.toarray())
+    print(test_data.shape)
+
+
 if __name__ == '__main__':
-    main()
+    #main()
+    main2()

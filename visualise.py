@@ -109,8 +109,10 @@ def main5():
     pca = PCA(n_components=0.95)
     X_reduced = pca.fit_transform(X)
     print("PCA finished..")
-    np.save('lmrd_train_0-95.npy', X_reduced)
+    np.save('lmrd_train_0-95_components.npy', pca.components_)
+    #np.save('lmrd_train_0-95.npy', X_reduced)
     print(X_reduced.shape)
+    print(pca.components_.shape)
 
 if __name__ == "__main__":
     # main()

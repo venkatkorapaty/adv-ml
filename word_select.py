@@ -49,7 +49,6 @@ def main2():
     np.save('./train_reduced2.npy', X)
     np.save('./train_words_reduced2.npy', words)
 
-
 if __name__ == '__main__':
     main()
     main2()
