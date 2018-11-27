@@ -1,5 +1,6 @@
 import numpy as np
 from sklearn.svm import LinearSVC
+from sklearn.svm import SVC
 from sklearn.model_selection import KFold
 
 
@@ -404,8 +405,23 @@ def TestError():
     Test error:  0.87256
     """
 
+def NonLinKernelSvms():
+    X_t = np.load('lmrd_train.npy')
+    X_cv = np.load('lmrd_cv.npy')
+    y_t = np.load('lmrd_train_y.npy')
+    y_cv = np.load('lmrd_cv_y.npy')
 
-def KFoldSvm(X, y, n_splits=2, C=1):
+    X = np.concatenate((X_t, X_cv))
+    y = np.concatenate((y_t, y_cv))
+    X_t = None
+    X_cv = None
+
+    cv_err_avg = KFoldSvm(X, y, n_splits=5, C=0.05, svm=NonLinSvm, kernel=[
+        "poly", 2, 1])
+    print("CV_avg error: ", cv_err_avg)
+
+
+def KFoldSvm(X, y, n_splits=2, C=1, svm=Svm, kernel=None):
     kf = KFold(n_splits=n_splits)
     split = 1
     cv_err_avg = 0
@@ -413,12 +429,41 @@ def KFoldSvm(X, y, n_splits=2, C=1):
         print("Split :", split)
         X_t, X_cv = X[train_index], X[cv_index]
         y_t, y_cv = y[train_index], y[cv_index]
-        cv_err_avg += Svm(X_t, y_t, X_cv, y_cv, C=C)
+        if kernel is None:
+            cv_err_avg += svm(X_t, y_t, X_cv, y_cv, C=C)
+        else:
+            cv_err_avg += svm(X_t, y_t, X_cv, y_cv, C=C, kernel=kernel)
         split += 1
     return cv_err_avg / n_splits
 
+
 def Svm(X_t, y_t, X_cv, y_cv, C=1):
     svm = LinearSVC(loss="hinge", C=C)
+    svm.fit(X_t, y_t[:, 0])
+    train_pred = svm.predict(X_t)
+    print("C: ", C)
+    correct_preds = np.array(train_pred) == y_t[:, 0]
+    print("Train error: ", np.sum(correct_preds) / y_t[:, 0].shape[0])
+    
+    if X_cv is not None:
+        cv_pred = svm.predict(X_cv)
+        correct_preds = np.array(cv_pred) == y_cv[:, 0]
+        cv_err = np.sum(correct_preds) / y_cv[:, 0].shape[0]
+        print("CV error: ", cv_err)
+        return cv_err
+    return svm
+
+
+def NonLinSvm(X_t, y_t, X_cv, y_cv, C=1, kernel = ["poly", 1, 1]):
+    # kernel parameter is kernal type, followed by parameters for it
+    if kernel[0] == "poly":
+        # type of kernel, degree, coef0 controls how much lower degree polynomials
+        # influence the model vs higher degree
+        svm = SVC(kernel=kernel[0], degree=kernel[1], coef0=kernel[2], C=C)
+    elif kernel[0] == "rbf":
+        svm = SVC(kernel=kernel[0], gamma=kernel[1], C=C)
+    else:
+        return
     svm.fit(X_t, y_t[:, 0])
     train_pred = svm.predict(X_t)
     print("C: ", C)
@@ -438,4 +483,7 @@ if __name__ == '__main__':
     #main()
     #main2()
     #CurrentHypotheses()
-    TestError()
+    #TestError()
+
+    # Non-linear SVMs
+    NonLinKernelSvms()
