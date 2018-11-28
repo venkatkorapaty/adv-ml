@@ -15,7 +15,7 @@ def main():
     X_t = None
     X_cv = None
 
-    cv_err_avg = KFoldSvm(X, y, n_splits=5, C=100)
+    cv_err_avg = KFoldSvm(X, y,Svm, n_splits=5, C=100)
     print("CV_avg error: ", cv_err_avg)
     """ RESULTS:
     Split : 1
@@ -40,7 +40,7 @@ def main():
     CV error:  0.8452
     CV_avg error:  0.8475999999999999
     """
-    cv_err_avg = KFoldSvm(X, y, n_splits=5, C=50)
+    cv_err_avg = KFoldSvm(X, y, Svm, n_splits=5, C=50)
     print("CV_avg error: ", cv_err_avg)
     """ RESULTS:
     Split : 1
@@ -65,7 +65,7 @@ def main():
     CV error:  0.8452
     CV_avg error:  0.8475999999999999
     """
-    cv_err_avg = KFoldSvm(X, y, n_splits=5, C=0.5)
+    cv_err_avg = KFoldSvm(X, y, Svm, n_splits=5, C=0.5)
     print("CV_avg error: ", cv_err_avg)
     """ RESULTS:
     Split : 1
@@ -90,7 +90,7 @@ def main():
     CV error:  0.8506
     CV_avg error:  0.8516400000000001
     """
-    cv_err_avg = KFoldSvm(X, y, n_splits=5, C=0.1)
+    cv_err_avg = KFoldSvm(X, y, Svm, n_splits=5, C=0.1)
     print("CV_avg error: ", cv_err_avg)
     """Split : 1
     C:  0.1
@@ -114,7 +114,7 @@ def main():
     CV error:  0.8668
     CV_avg error:  0.8674399999999999
     """
-    cv_err_avg = KFoldSvm(X, y, n_splits=5, C=0.05)
+    cv_err_avg = KFoldSvm(X, y, Svm, n_splits=5, C=0.05)
     print("CV_avg error: ", cv_err_avg)
     """ RESULTS
     Split : 1
@@ -147,7 +147,7 @@ def main2():
     y_cv = np.load('lmrd_cv_y.npy')
     y = np.concatenate((y_t, y_cv))
 
-    cv_err_avg = KFoldSvm(X, y, n_splits=5, C=100)
+    cv_err_avg = KFoldSvm(X, y, Svm, n_splits=5, C=100)
     print("CV_avg error: ", cv_err_avg)
     """ RESULTS:
     Split : 1
@@ -172,7 +172,7 @@ def main2():
     CV error:  0.8262
     CV_avg error:  0.8278000000000001
     """
-    cv_err_avg = KFoldSvm(X, y, n_splits=5, C=50)
+    cv_err_avg = KFoldSvm(X, y, Svm, n_splits=5, C=50)
     print("CV_avg error: ", cv_err_avg)
     """ RESULTS:
     Split : 1
@@ -197,7 +197,7 @@ def main2():
     CV error:  0.826
     CV_avg error:  0.8283599999999998
     """
-    cv_err_avg = KFoldSvm(X, y, n_splits=5, C=1)
+    cv_err_avg = KFoldSvm(X, y, Svm, n_splits=5, C=1)
     print("CV_avg error: ", cv_err_avg)
     """ RESULTS:
     Split : 1
@@ -222,7 +222,7 @@ def main2():
     CV error:  0.8404
     CV_avg error:  0.84184
     """
-    cv_err_avg = KFoldSvm(X, y, n_splits=5, C=0.5)
+    cv_err_avg = KFoldSvm(X, y, Svm, n_splits=5, C=0.5)
     print("CV_avg error: ", cv_err_avg)
     """ RESULTS:
     Split : 1
@@ -247,7 +247,7 @@ def main2():
     CV error:  0.8476
     CV_avg error:  0.8493999999999999
     """
-    cv_err_avg = KFoldSvm(X, y, n_splits=5, C=0.1)
+    cv_err_avg = KFoldSvm(X, y, Svm, n_splits=5, C=0.1)
     print("CV_avg error: ", cv_err_avg)
     """ RESULTS:
     Split : 1
@@ -264,7 +264,7 @@ def main2():
     CV error:  0.8702
     Split : 4
     """
-    cv_err_avg = KFoldSvm(X, y, n_splits=5, C=0.05)
+    cv_err_avg = KFoldSvm(X, y, Svm, n_splits=5, C=0.05)
     print("CV_avg error: ", cv_err_avg)
     """ RESULTS:
     Split : 1
@@ -304,7 +304,7 @@ def CurrentHypotheses():
     X_cv = None
 
     print("15236 features")
-    cv_err_avg = KFoldSvm(X, y, n_splits=5, C=0.05)
+    cv_err_avg = KFoldSvm(X, y, Svm, n_splits=5, C=0.05)
     Svm(X, y, None, None, C=0.05)
     print("CV Avg:", cv_err_avg)
     print("")
@@ -336,7 +336,7 @@ def CurrentHypotheses():
     """
     print("5021 principle components")
     X = np.load('lmrd_train_0-95.npy')
-    cv_err_avg = KFoldSvm(X, y, 5, C=0.05)
+    cv_err_avg = KFoldSvm(X, y, Svm, 5, C=0.05)
     Svm(X, y, None, None, C=0.05)
     print("CV Avg:", cv_err_avg)
     """ RESULTS:
@@ -416,12 +416,12 @@ def NonLinKernelSvms():
     X_t = None
     X_cv = None
 
-    cv_err_avg = KFoldSvm(X, y, n_splits=5, C=0.05, svm=NonLinSvm, kernel=[
+    cv_err_avg = KFoldSvm(X, y, NonLinSvm, n_splits=5, C=0.05, kernel=[
         "poly", 2, 1])
     print("CV_avg error: ", cv_err_avg)
 
 
-def KFoldSvm(X, y, n_splits=2, C=1, svm=Svm, kernel=None):
+def KFoldSvm(X, y, svm, n_splits=2, C=1, kernel=None):
     kf = KFold(n_splits=n_splits)
     split = 1
     cv_err_avg = 0
