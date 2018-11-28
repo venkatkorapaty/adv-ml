@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.svm import LinearSVC
 from sklearn.svm import SVC
 from sklearn.model_selection import KFold
+from sklearn import preprocessing
 
 
 def main():
@@ -412,6 +413,7 @@ def NonLinKernelSvms():
     y_cv = np.load('lmrd_cv_y.npy')
 
     X = np.concatenate((X_t, X_cv))
+    X = preprocessing.scale(X)
     y = np.concatenate((y_t, y_cv))
     X_t = None
     X_cv = None
@@ -461,9 +463,8 @@ def NonLinSvm(X_t, y_t, X_cv, y_cv, C=1, kernel = ["poly", 1, 1]):
         # influence the model vs higher degree
         svm = SVC(kernel=kernel[0], degree=kernel[1], coef0=kernel[2], C=C)
     elif kernel[0] == "rbf":
+        print("rbf..")
         svm = SVC(kernel=kernel[0], gamma=kernel[1], C=C)
-    else:
-        return
     svm.fit(X_t, y_t[:, 0])
     train_pred = svm.predict(X_t)
     print("C: ", C)
