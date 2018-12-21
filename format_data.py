@@ -1,8 +1,9 @@
 import numpy as np
 import os
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.model_selection import train_test_split
 
-def main():
+def CreateLMRTrainData():
 #     stop_words = ["a", "am", "among", "amongst", "amoungst", "amount", "an", "and", "another",
 #     "any", "anyhow", "anyone", "anything", "anyway", "anywhere", "are",
 #     "around", "as", "at", "back", "be", "became", "because", "become",
@@ -83,7 +84,7 @@ def get_text(reviews, path, all_reviews):
         text = open(path + reviews[i], encoding='utf-8').readlines()[0]
         all_reviews.append(text)
 
-def main2():
+def CreateLMRTestData():
     words = np.load('train_words_reduced2.npy')
     vectorizer = CountVectorizer(vocabulary=list(words))
 
@@ -102,6 +103,39 @@ def main2():
     print(test_data.shape)
 
 
+def CreateOWBCTrainTestData():
+    path = "./breast-cancer-wisconsin.data"
+    
+    data = []
+    y = []
+    with open(path) as f:
+        
+        for line in f:
+            if '?' not in line:
+                d = line.strip().split(',')
+                y_i = d.pop()
+                if y_i == '2':
+                    y.append(1)
+                elif y_i == '4':
+                    y.append(0)
+                d = d[1:]
+                for i in range(len(d)):
+                    d[i] = int(d[i])
+                print(d)
+                data.append(d)
+    data = np.array(data)
+    y = np.array(y)
+    print(data.shape)
+    print(y.shape)
+
+    X_train, X_test, y_train, y_test = train_test_split(data, y, test_size=0.2)
+    np.save('./obcw_train.npy', X_train)
+    np.save('./obcw_train_y.npy', y_train)
+    np.save('./obcw_test.npy', X_test)
+    np.save('./obcw_test_y.npy', y_test)
+
+
 if __name__ == '__main__':
-    #main()
-    main2()
+    CreateLMRTrainData()
+    CreateLMRTestData()
+    CreateOWBCTrainTestData()

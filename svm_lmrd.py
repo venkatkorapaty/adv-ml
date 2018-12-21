@@ -5,7 +5,7 @@ from sklearn.model_selection import KFold
 from sklearn import preprocessing
 
 
-def main():
+def SelectInitialModels():
     X_t = np.load('lmrd_train.npy')
     X_cv = np.load('lmrd_cv.npy')
     y_t = np.load('lmrd_train_y.npy')
@@ -142,7 +142,7 @@ def main():
     """
 
 
-def main2():
+def SelectDataReducedModels():
     X = np.load('lmrd_train_0-95.npy')
     y_t = np.load('lmrd_train_y.npy')
     y_cv = np.load('lmrd_cv_y.npy')
@@ -293,7 +293,7 @@ def main2():
     CV Avg: 0.8752000000000001
     """
 
-def CurrentHypotheses():
+def ChosenHypotheses():
     X_t = np.load('lmrd_train.npy')
     X_cv = np.load('lmrd_cv.npy')
     y_t = np.load('lmrd_train_y.npy')
@@ -481,10 +481,7 @@ def NonLinSvm(X_t, y_t, X_cv, y_cv, C=1, kernel = ["poly", 1, 1]):
 
 
 if __name__ == '__main__':
-    #main()
-    #main2()
-    #CurrentHypotheses()
-    #TestError()
-
-    # Non-linear SVMs
-    NonLinKernelSvms()
+    SelectInitialModels()
+    SelectDataReducedModels()
+    ChosenHypotheses()
+    TestError()

@@ -3,16 +3,20 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.feature_selection import RFE
 from sklearn.model_selection import KFold
 
-def main():
+def SelectInitialModels():
     X_t = np.load('lmrd_train.npy')
     y_t = np.load('lmrd_train_y.npy')
     X_cv = np.load('lmrd_cv.npy')
     y_cv = np.load('lmrd_cv_y.npy')
+    #X = np.load('./train_reduced3.npy')
+    #y = get_train_labels()
 
     LogisReg(X_t, y_t, X_cv, y_cv, p='l1', C=1)
-    recursive_feature_elimination(X_t, y_t, X_cv, y_cv, p='l1', C=0.75)
-    recursive_feature_elimination(X_t, y_t, X_cv, y_cv, p='l1', C=0.5)
-    recursive_feature_elimination(X_t, y_t, X_cv, y_cv, p='l1', C=0.3)
+    #KFoldNoRegLogisticRegression(X, y, 5, C=1)
+    #KFoldNoRegLogisticRegression(X, y, 5, C=0.75)
+    #recursive_feature_elimination(X_t, y_t, X_cv, y_cv, p='l1', C=0.75)
+    #recursive_feature_elimination(X_t, y_t, X_cv, y_cv, p='l1', C=0.5)
+    #recursive_feature_elimination(X_t, y_t, X_cv, y_cv, p='l1', C=0.3)
     #LogisReg(X_t, y_t, X_cv, y_cv, p='l1', C=0.95)
     #LogisReg(X_t, y_t, X_cv, y_cv, p='l1', C=0.9)
     #LogisReg(X_t, y_t, X_cv, y_cv, p='l1', C=0.85)
@@ -27,7 +31,7 @@ def main():
     #LogisReg(X_t, y_t, X_cv, y_cv, p='l1', C=0.1)
     #LogisReg(X_t, y_t, X_cv, y_cv, p='l1', C=0.007)
 
-def main2():
+def SelectDataReducedModels():
     X = np.load('lmrd_train_0-95.npy')
     y_t = np.load('lmrd_train_y.npy')
     y_cv = np.load('lmrd_cv_y.npy')
@@ -103,7 +107,7 @@ def main2():
     CV error:  0.8806
     """
 
-def CurrentHypothesis():
+def ChosenHypotheses():
     X_t = np.load('lmrd_train.npy')
     X_cv = np.load('lmrd_cv.npy')
     y_t = np.load('lmrd_train_y.npy')
@@ -257,11 +261,18 @@ def recursive_feature_elimination(X_t, y_t, X_cv, y_cv, p, C=1):
     print("Train error: ", np.sum(correct_preds) / y_t[:, 0].shape[0])
     
     correct_preds = np.array(cv_pred) == y_cv[:, 0]
-    print("CV error: ", np.sum(correct_preds) / y_cv[:, 0].shape[0])    
+    print("CV error: ", np.sum(correct_preds) / y_cv[:, 0].shape[0])
+
+
+def get_train_labels():
+    ones = np.ones((12500, 1))
+    zeros = np.zeros((12500, 1))
+    y = np.atleast_2d(np.append(ones, zeros)).T    
+    return y
 
 
 if __name__ == '__main__':
-    #main()
-    #main2()
-    #CurrentHypothesis()
+    SelectInitialModels()
+    SelectDataReducedModels()
+    ChosenHypotheses()
     TestError()

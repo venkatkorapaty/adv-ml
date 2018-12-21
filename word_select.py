@@ -2,9 +2,9 @@ import numpy as np
 import os
 from sklearn.feature_extraction.text import CountVectorizer
 
-def main():
+def RemoveInfrequentWords():
     """
-    Gets rid of words that occur at most 5 times in all of the reviews
+    Gets rid of words that occur at most 15 times in all of the reviews
     """
     X = np.load('train.npy')
     words = np.load('train_words.npy')
@@ -22,10 +22,10 @@ def main():
     np.save('./train_words_reduced15.npy', fifteen_occ)
 
 
-def main2():
+def RemoveFrequentWords():
     """
-    Gets rid of 47 most occuring words in all of the
-    articles, asides from good, not and was
+    Gets rid of 48 most occuring words in all of the
+    articles, asides from good and bad
     """
     X = np.load('train_reduced15.npy')
     words = np.load('train_words_reduced15.npy')
@@ -50,5 +50,5 @@ def main2():
     np.save('./train_words_reduced2.npy', words)
 
 if __name__ == '__main__':
-    main()
-    main2()
+    RemoveInfrequentWords()
+    RemoveFrequentWords()
